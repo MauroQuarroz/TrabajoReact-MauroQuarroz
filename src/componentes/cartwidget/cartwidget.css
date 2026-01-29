@@ -1,3 +1,7 @@
-img{
-    width: 100px;
+
+header > img {
+  height: auto;
+  width: 50px;
+  border-radius: 50px;
+  
 }

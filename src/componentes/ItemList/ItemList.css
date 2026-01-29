@@ -1,0 +1,11 @@
+
+
+.productos-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+  gap: 40px;
+  padding: 50px 5%;
+  justify-content: center; 
+  max-width: 1300px;
+  margin: 0 auto;
+}
