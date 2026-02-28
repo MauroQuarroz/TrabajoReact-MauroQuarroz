@@ -2,25 +2,39 @@ import { useParams } from "react-router-dom"
 import "./itemListContainer.css"
 import { useEffect, useState } from "react"
 import ItemList from "../ItemList/ItemList"
-import { obtenerProductos , obtenerProductosCategoria } from "../../../asyncmock"
-
+import { db } from "../../services/config"
+import { collection, getDocs, query, where} from "firebase/firestore"
+import Loader from "../Loader/Loader"
  
 
 const ItemListContainer = () => {
 
+ const [cargador, setCargador] = useState(false)
 const [productos, setProductos] = useState([])
 const {cat} = useParams()
 
-useEffect(()=>{
-  const funcionDoble = cat ? obtenerProductosCategoria : obtenerProductos
+ useEffect(()=>{
+      setCargador(true)
+      const obtenerProductos = cat ? query(collection(db, "productos"), where("categoria", "==", cat)) : collection(db, "productos")
 
-  funcionDoble(cat)
-  .then(respuesta=> setProductos(respuesta))
-},[cat])
+      getDocs(obtenerProductos)
+        .then(res => {
+          const productosObtenidos = res.docs.map(doc => {
+            const data = doc.data()
+            return {id: doc.id, ...data}
+          })
+          setProductos(productosObtenidos)
+        })
+        .catch(error => console.log(error))
+        .finally(()=>{
+          setCargador(false)
+        })
+    },[cat])
 
   return (
     <>
-   <ItemList productos={productos}/>
+   <h2>Catálogo</h2>
+    {cargador ? <Loader/> : <ItemList productos={productos}/>}
     </>
   )
 }
