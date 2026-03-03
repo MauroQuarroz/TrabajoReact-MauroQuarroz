@@ -24,11 +24,17 @@
 }
 
 .header-pepe h1 {
-  font-size: 1.2rem;
-  color: azure;
+  font-size: 1.8rem;
+   color: #3b82f6;
   margin: 0;
   white-space: nowrap; 
+  font-family:'Times New Roman', Times, serif
 }
+
+.header-pepe h1:hover{
+  color: #cbd5e1;
+}
+
 
 .header-pepe nav ul {
   display: flex;
@@ -47,4 +53,20 @@
 
 .header-pepe nav a:hover {
   color: #3b82f6;
+}
+
+.numero{
+  margin-right: 2px;
+  font-size: 20px;
+  color: #3b82f6;
+}
+.linknumero{
+text-decoration: none;}
+
+.numero:hover{
+   color: azure;
+}
+
+.linktitulo{
+text-decoration: none;
 }

@@ -20,12 +20,14 @@ const restar = () => {
 
   return (
     <div className="contador-box">
-<button onClick={restar}> - </button>
-<p> {contador} </p>
 <button onClick={sumar}> + </button>
+<p> {contador} </p>
+<button onClick={restar}> - </button>
 <button onClick={() => manejadorunitario(contador)}> Agregar al carrito </button>
     </div>
   )
 }
+
+
 
 export default ItemCount

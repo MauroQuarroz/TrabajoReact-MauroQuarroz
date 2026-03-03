@@ -1,0 +1,138 @@
+
+
+.checkout-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+}
+
+
+.resumen-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+
+  box-shadow: 4px 4px 0px rgba(37, 99, 235, 0.1), 
+              8px 8px 0px rgba(37, 99, 235, 0.05);
+}
+
+.resumen-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.resumen-item p {
+  margin: 0 10px;
+  color: #1e293b;
+  font-size: 0.95rem;
+  flex: 1; 
+}
+
+
+.resumen-item p:last-of-type {
+  color: #2563eb;
+  font-weight: bold;
+  text-align: right;
+}
+
+
+.resumen-item hr {
+  display: none;
+}
+
+
+.total-pago {
+  color: #1e293b;
+  text-align: center;
+  margin: 40px 0;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+
+.formulario-datos {
+  display: flex;
+ flex-direction: column;
+
+  margin-top: 20px;
+}
+
+.formulario-grupo {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.formulario-grupo label {
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.formulario-grupo input {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+
+.btn-confirmar {
+  grid-column: 1 / -1; 
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  
+  width: fit-content; 
+  background: #1e293b;
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-confirmar:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+
+.error-mensaje {
+  grid-column: span 2;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mensaje-exito {
+  text-align: center;
+  padding: 50px;
+}
+
+.mensaje-exito h1 { color: #22c55e; }
+
+
+@media (max-width: 600px) {
+  .formulario-datos {
+    grid-template-columns: 1fr;
+  }
+  .btn-confirmar, .error-mensaje {
+    grid-column: span 1;
+  }
+}

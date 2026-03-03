@@ -1,6 +1,6 @@
 import { useState, createContext} from "react";
 
-//2) Creamos el contexto
+
 export const CarritoContext = createContext({
     carrito: [],
     total: 0,
@@ -10,13 +10,13 @@ export const CarritoContext = createContext({
 
 export const CarritoProvider = ({children}) =>{
 
-    //3) creamos el estado para el carrito, total y cantidadTotal
+    
     const [carrito, setCarrito] = useState([])
     const [total, setTotal] = useState(0)
     const [cantidadTotal, setCantidadTotal] = useState(0)
 
     
-    //4)Agregamos alguna funciones auxiliares para la lógica del carrito
+    
 
     const agregarAlCarrito = (item, cantidad) =>{
         const productoExistente = carrito.find(prod => prod.item.id === item.id)
@@ -35,11 +35,11 @@ export const CarritoProvider = ({children}) =>{
             })
             setCarrito(carritoActualizado)
             setCantidadTotal(prev => prev + cantidad)
-            setCantidadTotal(prev => prev +(item.precio * cantidad))
+            setTotal(prev => prev +(item.precio * cantidad))
         }
     }
 
-    //Funcion para eliminar producto:
+   
 
     const eliminarProducto = (id) => {
         const productoEliminado = carrito.find (prod => prod.item.id === id)
@@ -50,7 +50,7 @@ export const CarritoProvider = ({children}) =>{
         setTotal(prev => prev - (productoEliminado.item.precio * productoEliminado.cantidad))
     }
 
-    //Funcion para vaciar el carrito:
+
 
     const vaciarCarrito = () =>{
         setCarrito([]);

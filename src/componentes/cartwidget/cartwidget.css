@@ -1,7 +1,7 @@
 
-header > img {
-  height: auto;
-  width: 50px;
-  border-radius: 50px;
+.carritoimg {
+  height: 60px;
+  width: 80px;
+  border-radius: 10px;
   
 }

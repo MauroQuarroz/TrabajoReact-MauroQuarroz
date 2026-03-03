@@ -36,3 +36,50 @@
   color: #475569;
   max-width: 600px;
 }
+
+
+.botoneraItems {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+  align-items: center;
+}
+
+
+.IraFin, .VolveraComprar {
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+
+.IraFin {
+  background: #2563eb;
+  color: white;
+  box-shadow: 4px 4px 0px rgba(37, 99, 235, 0.2);
+}
+
+.IraFin:hover {
+  transform: scale(1.02);
+  background: #1e40af;
+}
+
+
+.VolveraComprar {
+  background: white;
+  color: #1e293b;
+  border: 2px solid #1e293b;
+}
+
+.VolveraComprar:hover {
+  background: #f8fafc;
+  border-color: #2563eb;
+  color: #2563eb;
+}
+

@@ -2,38 +2,34 @@ import { useState, useContext } from "react";
 import { CarritoContext } from "../../context/CarritoContext";
 import { db } from "../../services/config";
 import { collection, addDoc, updateDoc, doc, getDoc } from "firebase/firestore";
+import { Link } from "react-router-dom"
+import Loader from "../Loader/Loader"
+import "./CheckOut.css"
 
 const CheckOut = () => {
-
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const [ordenId, setOrdenId] = useState("");
- const [nombre, setNombre] = useState("");
+  const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [telefono, setTelefono] = useState("");
   const [email, setEmail] = useState("");
   const [emailConfirmacion, setEmailConfirmacion] = useState();
-  
-  const { carrito, vaciarCarrito, total } = useContext(CarritoContext);
+  const [loading, setLoading] = useState(false);
 
-                                                                  //Funciones y validaciones
+  const { carrito, vaciarCarrito, total } = useContext(CarritoContext);
 
   const manejadorFormulario = (event) => {
     event.preventDefault();
 
-                                                                            //Verificamos que los campos esten completos:
     if (!nombre || !apellido || !telefono || !email || !emailConfirmacion) {
-      setError("Por favor completa todos los campos o moriras!!!");
+      setError("Por favor completa todos los campos!!!");
       return;
     }
-
-                                                                                 //Validamos que los campos del Email coincidan
 
     if (email !== emailConfirmacion) {
-      setError("Los campos del email no coinciden, maldito insectooo!");
+      setError("Los campos de email no coinciden!");
       return;
     }
-
-                                                                                    //1) creamos un objeto con todos los datos de la orden de compra:
 
     const orden = {
       items: carrito.map((producto) => ({
@@ -49,98 +45,99 @@ const CheckOut = () => {
       email,
     };
 
-    
-
-           //Vamos a modificar el codigo para que ejeute varias promesas en paralelo, por un lado que actualice el sotck de productos y por el otro lado que genere una orden de compra
-             //Vamos a usar para lograr esto: Promise.all
+setLoading(true);
 
     Promise.all(
       orden.items.map(async (productoOrden) => {
         const productoRef = doc(db, "productos", productoOrden.id);
-        //Por cada poroducto en la coleccion "productos" obtengo una referencia, y a partir de esa referencia obtengo un DOC.
         const productoDoc = await getDoc(productoRef);
         const stockActual = productoDoc.data().stock;
-        //Data es una méotodo que me permite accieder a la informacion del documento
 
         await updateDoc(productoRef, {
           stock: stockActual - productoOrden.cantidad,
         });
-        //Modifico el stock y subo la infomracion actualizada.
       }),
-    ).then(() => {
-      // Guardar la orden en la base de datos:
-      addDoc(collection(db, "ordenes"), orden)
-        .then((docRef) => {
-          setOrdenId(docRef.id);
-          vaciarCarrito();
-        })
-        .catch((error) => {
-          setError("Se produjo un error al crear la orden, vamos a moriiiir!!");
-        });
-    })
-    .catch((error)=>{
-        console.log("No se pudo actalizar el stock", error)
-        setError("No se puede actualizar el stock, intente en el supermecado Vital")
-    })
+    )
+      .then(() => {
+        addDoc(collection(db, "ordenes"), orden)
+          .then((docRef) => {
+            setOrdenId(docRef.id);
+            vaciarCarrito();
+            setLoading(false);
+          })
+          .catch((error) => {
+            setError(
+              "Se produjo un error al crear la orden, intentalo de nuevo por favor.",);
+            setLoading(false);
+          });
+      })
+      .catch((error) => {
+        setError("No se puede actualizar el stock.");
+        setLoading(false);
+      });
   };
 
 
 
-
-
-
-
-
-
   return (
-     <div>
-      <h2>Checkout:</h2>
-      <form onSubmit={manejadorFormulario}>
-        {carrito.map((producto) => (
-          <div key={producto.item.id}>
-            <p>
-              {producto.item.nombre} x {producto.cantidad}
-            </p>
-            <p>{producto.item.precio}</p>
-            <hr />
-          </div>
-        ))}
-        <div>
-          <label htmlFor="">Nombre</label>
-          <input type="text" onChange={(e) => setNombre(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Apellido</label>
-          <input type="text" onChange={(e) => setApellido(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Telefono</label>
-          <input type="text" onChange={(e) => setTelefono(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Email</label>
-          <input type="email" onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="">Email Confirmacion</label>
-          <input
-            type="email"
-            onChange={(e) => setEmailConfirmacion(e.target.value)}
-          />
-        </div>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button type="submit">Confirmar Compra</button>
-
-        {ordenId && (
-          <strong>
-            Gracias por tu compra! Tu numero de orden es: {ordenId}
-          </strong>
-        )}
-      </form>
+    <div className="checkout-container">
+{loading ? (
+  <h1>Generando su orden... <div><Loader/></div> </h1>
+      ) :
+ordenId ? (
+   <div className="mensaje-exito">
+        <h1>¡Compra realizada con exito!</h1>
+        <p>Muchas gracias {nombre}, tu orden de compra es: <strong>{ordenId}</strong></p>
+        <Link to="/" className="btn-volver">Volver a la tienda</Link>
     </div>
-  )
-}
+):( <>
+          <h2>Resumen:</h2>
+          <form onSubmit={manejadorFormulario}>
+            {carrito.map((producto) => (
+              <div key={producto.item.id} className="resumen-item">
+                <img src={producto.item.img} alt= {producto.item.nombre}/>
+                <p>
+                  {producto.item.nombre} x {producto.cantidad}
+                </p>
+                <p>Precio unitario: ${producto.item.precio}</p>
+                <p>Precio x {producto.cantidad}: ${producto.item.precio*producto.cantidad}</p>
+                <hr />
+                
+              </div>
+            ))}
+            <h2 className="total-pago">El monto total de la compra es de : ${total}</h2>
 
-export default CheckOut
+            <div className="formulario-datos">
+                <div className="formulario-grupo">
+                    <label>Nombre</label>
+                    <input type="text" onChange={(e) => setNombre(e.target.value)} />
+                </div>
+                <div className="formulario-grupo">   
+                    <label>Apellido</label>
+                    <input type="text" onChange={(e) => setApellido(e.target.value)} />
+                </div>
+                <div className="formulario-grupo">
+                    <label >Telefono</label>
+                    <input type="text" onChange={(e) => setTelefono(e.target.value)} />
+                </div>
+                <div className="formulario-grupo">
+                    <label>Email</label>
+                    <input type="email" onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="formulario-grupo">
+                    <label>Email Confirmacion</label>
+                    <input type="email" onChange={(e) => setEmailConfirmacion(e.target.value)} />
+                </div>
+            </div>
+
+            {error && <p className="error-mensaje" style={{ color: "red" }}>{error}</p>}
+
+            <button type="submit" className="btn-confirmar">Confirmar Compra</button>
+          </form>
+        </>
+)}
+    </div>
+  );
+};
+
+export default CheckOut;
