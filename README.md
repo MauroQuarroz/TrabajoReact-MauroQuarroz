@@ -19,4 +19,5 @@ Mauro Quarroz.
 - Generar el carrito de compra con los productos agregados.
 - Generar una orden de compra con los datos del usuario y los productos agregados, simulando la culminación de la compra.
 
-Puedes acceder a la puesta en producción del proyecto aqui [Dominio](aqui)
+Puedes acceder a la puesta en producción del proyecto aquí [Dominio netlify](https://mauro-pepe-electrodomesticos.netlify.app/)
+[Dominio Vercel](https://pepe-electromesticos-mauro-quarroz.vercel.app/)
