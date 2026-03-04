@@ -1,4 +1,4 @@
-import Cartwidget from "../cartwidget/Cartwidget";
+import Cartwidget from "../Cartwidget/Cartwidget";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { CarritoContext } from "../../context/CarritoContext"
