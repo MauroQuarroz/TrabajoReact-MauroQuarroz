@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import "./itemListContainer.css"
+import "./ItemListContainer.css"
 import { useEffect, useState } from "react"
 import ItemList from "../ItemList/ItemList"
 import { db } from "../../services/config"
